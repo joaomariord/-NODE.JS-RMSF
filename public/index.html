@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- Template by Quackit.com -->
-<!-- Images by various sources under the Creative Commons CC0 license and/or the Creative Commons Zero license. 
+<!-- Images by various sources under the Creative Commons CC0 license and/or the Creative Commons Zero license.
 Although you can use them, for a more unique website, replace these images with your own. -->
 <html lang="en">
 
@@ -11,7 +11,7 @@ Although you can use them, for a more unique website, replace these images with 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Business 2</title>
+    <title>RMSF Cloud</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -28,7 +28,7 @@ Although you can use them, for a more unique website, replace these images with 
 
     <!-- Custom Fonts from Google -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    
+
 </head>
 
 <body>
@@ -45,32 +45,21 @@ Although you can use them, for a more unique website, replace these images with 
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="#">
-                	<span class="glyphicon glyphicon-fire"></span> 
-                	LOGO
+                	<span class="glyphicon glyphicon-fire"></span>
+                	Fire Detector Cloud
                 </a>
             </div>
             <!-- Navbar links -->
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="active">
-                        <a href="#">Home</a>
+                    <li>
+                        <a href="../status">Status</a>
                     </li>
                     <li>
-                        <a href="#">Products</a>
-                    </li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Services <span class="caret"></span></a>
-						<ul class="dropdown-menu" aria-labelledby="about-us">
-							<li><a href="#">Engage</a></li>
-							<li><a href="#">Pontificate</a></li>
-							<li><a href="#">Synergize</a></li>
-						</ul>
-					</li>
-                    <li>
-                        <a href="#">Contact</a>
+                        <a href="#api_docs">Api docs</a>
                     </li>
                 </ul>
-                
+
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container -->
     </nav>
@@ -79,9 +68,9 @@ Although you can use them, for a more unique website, replace these images with 
     <header>
         <div class="header-content">
             <div class="header-content-inner">
-                <h1>Dramatically Engage</h1>
-                <p>Objectively innovate empowered manufactured products whereas parallel platforms.</p>
-                <a href="#" class="btn btn-primary btn-lg">Engage Now</a>
+                <h1>Cloud Api for fire detection sensor</h1>
+                <p>Developed for RMSF course at IST, Portugal</p>
+                <a href="#api_docs" class="btn btn-primary btn-lg">See Docs</a>
             </div>
         </div>
     </header>
@@ -91,9 +80,9 @@ Although you can use them, for a more unique website, replace these images with 
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
-                	<span class="glyphicon glyphicon-apple" style="font-size: 60px"></span>
-                    <h2 class="section-heading">Completely synergize resource taxing relationships</h2>
-                    <p class="text-light">Professionally cultivate one-to-one customer service with robust ideas. Dynamically innovate resource-leveling customer service for state of the art customer service.</p>
+                	<span class="glyphicon glyphicon-cloud" style="font-size: 60px"></span>
+                    <h2 class="section-heading">Bringing one more IoT application to the world</h2>
+                    <p class="text-light">IoT is in development, but where is it headed, to the future? Let's hope that it will become the future.</p>
                 </div>
             </div>
         </div>
@@ -104,92 +93,71 @@ Although you can use them, for a more unique website, replace these images with 
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <img class="img-responsive img-circle center-block" src="images/microphone.jpg" alt="">
+                    <img class="img-responsive img-circle center-block" src="images/github-mark.png" alt="">
                 </div>
                 <div class="col-sm-6">
-                	<h2 class="section-header">Best in Class</h2>
-                	<p class="lead text-muted">Holisticly predominate extensible testing procedures for reliable supply chains. Dynamically innovate resource-leveling customer service for state of the art customer service.</p>
-                	<a href="#" class="btn btn-primary btn-lg">Classify It</a>
-                </div>                
-                
+                	<h2 class="section-header">Being done for community</h2>
+                	<p class="lead text-muted">After the development is complete and its delivered to teacher, the contents of the development will be public in github.</p>
+                    <p class="lead text-muted">This project is composed of a Android Application, a Cloud Application and a Arduino Application, the communication is made using <a href="https://www.thethingsnetwork.org/docs/lorawan/">LoRaWAN</a>, <a href="https://www.thethingsnetwork.org/">TTN</a>, <a href="https://expressjs.com/">Express.js</a> and <a href="http://loopj.com/android-async-http/">Android Async HTTP Client</a>. </p>
+                </div>
             </div>
         </div>
     </section>
 
 	<!-- Content 2 -->
-     <section class="content content-2">
+     <section class="content content-2" id="api_docs">
         <div class="container">
+            <h1 class="section-header">Api Docs</h1>
             <div class="row">
-                <div class="col-sm-6">
-                	<h2 class="section-header">Superior Quality</h2>
-                	<p class="lead text-light">Holisticly predominate extensible testing procedures for reliable supply chains. Dynamically innovate resource-leveling customer service for state of the art customer service.</p>
-                	<a href="#" class="btn btn-default btn-lg">Test It</a>
-                </div>    
-                <div class="col-sm-6">
-                    <img class="img-responsive img-circle center-block" src="images/iphone.jpg" alt="">
-                </div>            
-                
-            </div>
-        </div>
-    </section>    
+                <div class="col-sm-6"
+                	<h2 class="lead text-light">GET routes</h2>
+                    <h3 class="text-light">/status route</h3>
+                    <p class="text-light">Gives back a JSON object with 4 objects:</p>
+                    <ul class="fa-ul">
+                      <li><i class="fa-li fa fa-check-square text-light"></i>temp  <span style="color: #42adf4">&rarr;</span> Temperature measured value and currently configured threshold</li>
+                      <li><i class="fa-li fa fa-check-square text-light"></i>gas  <span style="color: #42adf4">&rarr;</span> Gas measured value and currently configured threshold</li>
+                      <li><i class="fa-li fa fa-check-square text-light"></i>alert  <span style="color: #42adf4">&rarr;</span> Alert status and operational status</li>
+                      <li><i class="fa-li fa fa-check-square text-light"></i>water  <span style="color: #42adf4">&rarr;</span> Water Pump status and operational status</li>
+                    </ul>
+                    <a href="../status" class="btn btn-default btn-lg">Test It <span style="color: #42adf4">&rarr;</span> Status</a>
+                </div>
+                <div class="col-sm-6"
+                	<h2 class="lead text-light">POST routes</h2>
+                    <h3 class="text-light">/thr route</h3>
+                    <p class="text-light">Has two children routes: /temp and /gas</p>
+                    <p class="text-light">Posting a JSON in the body with a "set" object will configure threshold of temperature (/temp) or gas (/gas), to the value of "set", accepts doubles.</p>
+                    <h3 class="text-light">/set route</h3>
+                    <p class="text-light">Has two children routes: /alrt and /wtr</p>
+                    <p class="text-light">Posting a JSON in the body with a "set" object will configure the functioning of the alarm (/alrt) or water pump (/wtr), to the value of "set", must be a boolean.</p>
 
-    <!-- Promos -->
-	<div class="container-fluid">
-        <div class="row promo">
-        	<a href="#">
-				<div class="col-md-4 promo-item item-1">
-					<h3>
-						Unleash
-					</h3>
-				</div>
-            </a>
-            <a href="#">
-				<div class="col-md-4 promo-item item-2">
-					<h3>
-						Synergize
-					</h3>
-				</div>
-            </a>
-			
-			<a href="#">
-				<div class="col-md-4 promo-item item-3">
-					<h3>
-						Procrastinate
-					</h3>
-				</div>
-            </a>
-        </div>
-    </div><!-- /.container-fluid -->
-
-	<!-- Content 3 -->
-     <section class="content content-3">
-        <div class="container">
-			<h2 class="section-header"><span class="glyphicon glyphicon-pushpin text-primary"></span><br> Sanity Check</h2>
-			<p class="lead text-muted">Holisticly predominate extensible testing procedures for reliable supply chains. Dynamically innovate resource-leveling customer service for state of the art customer service.</p> 
-                    <a href="#" class="btn btn-primary btn-lg">Check Now</a>               
+                    <div class="btn btn-default btn-lg postman-run-button"
+                    data-postman-action="collection/import"
+                    data-postman-var-1="7e0a54f36de1a68b69f0"></div>
+                </div>
             </div>
         </div>
     </section>
-    
+
+
 	<!-- Footer -->
     <footer class="page-footer">
-    
+
     	<!-- Contact Us -->
         <div class="contact">
         	<div class="container">
 				<h2 class="section-heading">Contact Us</h2>
-				<p><span class="glyphicon glyphicon-earphone"></span><br> +1(23) 456 7890</p>
-				<p><span class="glyphicon glyphicon-envelope"></span><br> info@example.com</p>
+				<p><span class="glyphicon glyphicon-earphone"></span><br> liga para a tua mãe e é se queres</p>
+				<p><span class="glyphicon glyphicon-envelope"></span><br> não tens o mail dela é ??</p>
         	</div>
         </div>
-        	
+
         <!-- Copyright etc -->
         <div class="small-print">
         	<div class="container">
-        		<p>Copyright &copy; Example.com 2015</p>
+        		<p>Made with some <span style="color: #e25555;">&#9829;</span> in Lisboa,PT 2018</p>
         	</div>
         </div>
-        
+
     </footer>
 
     <!-- jQuery -->
@@ -200,9 +168,20 @@ Although you can use them, for a more unique website, replace these images with 
 
     <!-- Plugin JavaScript -->
     <script src="js/jquery.easing.min.js"></script>
-    
+
     <!-- Custom Javascript -->
     <script src="js/custom.js"></script>
+
+    <!-- Postman Button for collection-->
+    <script type="text/javascript">
+      (function (p,o,s,t,m,a,n) {
+        !p[s] && (p[s] = function () { (p[t] || (p[t] = [])).push(arguments); });
+        !o.getElementById(s+t) && o.getElementsByTagName("head")[0].appendChild((
+          (n = o.createElement("script")),
+          (n.id = s+t), (n.async = 1), (n.src = m), n
+        ));
+      }(window, document, "_pm", "PostmanRunObject", "https://run.pstmn.io/button.js"));
+    </script>
 
 </body>
 
