@@ -19,13 +19,8 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
-function getRandomBool(){
-  if (Math.floor(Math.random() * 2)==1) return true;
-  else return false;
-}
-
 var app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 80;
 
 app.use('/', express.static('public'))
 
@@ -52,10 +47,18 @@ app.post("/set/wtr",(req, res) => { //Set the on or off state of the water pump
 });
 
 app.get("/status", (req, res) => { //Get the most updated status of temperature, gas, alarm and pump
-  data.temp.status=getRandomInt(10)+20;
-  data.gas.status = getRandomInt(100)+1000;
-  data.alert.status = getRandomBool();
-  data.water.status = getRandomBool();
+  data.temp.status  = getRandomInt(10)+20;
+  data.gas.status   = getRandomInt(100)+1000;
+  if(data.temp.status > data.temp.threshold || data.gas.status > data.gas.threshold){
+    data.alert.status = true;
+  }
+  if (data.temp.status > data.temp.threshold && data.gas.status > data.gas.threshold){
+    data.water.status = true;
+  }
+  if(data.temp.status <= data.temp.threshold && data.gas.status <= data.gas.threshold){
+    data.water.status = false;
+    data.alert.status = false;
+  }
 
   res.send(data);
 });
