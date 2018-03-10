@@ -4,18 +4,24 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const STATUS_DEFAULT = 0;
+const BSTATS_DEFAULT = false;
 const THRESH_DEFAULT = 5;
-const OPERAT_DEFAULT = 1;
+const OPERAT_DEFAULT = true;
 
 let data = {
   temp  : {status : STATUS_DEFAULT, threshold : THRESH_DEFAULT},
   gas   : {status : STATUS_DEFAULT, threshold : THRESH_DEFAULT},
-  alert : {status : STATUS_DEFAULT, operational : OPERAT_DEFAULT},
-  water : {status : STATUS_DEFAULT, operational : OPERAT_DEFAULT}
+  alert : {status : BSTATS_DEFAULT, operational : OPERAT_DEFAULT},
+  water : {status : BSTATS_DEFAULT, operational : OPERAT_DEFAULT}
 }
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
+}
+
+function getRandomBool(){
+  if (Math.floor(Math.random() * 2)==1) return true;
+  else return false;
 }
 
 var app = express();
@@ -46,10 +52,10 @@ app.post("/set/wtr",(req, res) => { //Set the on or off state of the water pump
 });
 
 app.get("/status", (req, res) => { //Get the most updated status of temperature, gas, alarm and pump
-  data.temp.status=getRandomInt(2);
-  data.gas.status = getRandomInt(2);
-  data.alert.status = getRandomInt(2);
-  data.water.status = getRandomInt(2);
+  data.temp.status=getRandomInt(10)+20;
+  data.gas.status = getRandomInt(100)+1000;
+  data.alert.status = getRandomBool();
+  data.water.status = getRandomBool();
 
   res.send(data);
 });
