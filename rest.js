@@ -55,7 +55,11 @@ app.get("/status", (req, res) => { //Get the most updated status of temperature,
   if (data.temp.status > data.temp.threshold && data.gas.status > data.gas.threshold){
     data.water.status = true;
   }
+<<<<<<< HEAD
   if(data.temp.status <= data.temp.threshold && data.gas.status <= data.gas.threshold){
+=======
+  if(data.temp.status <= data.temp.threshold && data.gas.status <= data.gas.threshold)
+>>>>>>> 5b4d13c9f794d64c1796b2c9d4ff30cc8dda8318
     data.water.status = false;
     data.alert.status = false;
   }
