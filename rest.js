@@ -51,6 +51,7 @@ app.get("/status", (req, res) => { //Get the most updated status of temperature,
   data.gas.status   = getRandomInt(100)+1000;
   if(data.temp.status > data.temp.threshold || data.gas.status > data.gas.threshold){
     data.alert.status = true;
+    data.water.status = false;
   }
   if (data.temp.status > data.temp.threshold && data.gas.status > data.gas.threshold){
     data.water.status = true;
