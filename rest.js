@@ -2,22 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ttn_interface = require("./ttn_interface");
 
-const STATUS_DEFAULT = 0;
-const BSTATS_DEFAULT = false;
-const THRESH_DEFAULT = 5;
-const OPERAT_DEFAULT = true;
-
-let data = {
-  temp  : {status : STATUS_DEFAULT, threshold : THRESH_DEFAULT},
-  gas   : {status : STATUS_DEFAULT, threshold : THRESH_DEFAULT},
-  alert : {status : BSTATS_DEFAULT, operational : OPERAT_DEFAULT},
-  water : {status : BSTATS_DEFAULT, operational : OPERAT_DEFAULT}
-};
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
 let app = express();
 const PORT = process.env.PORT || 80;
 

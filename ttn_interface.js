@@ -2,12 +2,12 @@ let ttn = require("ttn");
 
 const STATUS_DEFAULT = 0;
 const B_STATS_DEFAULT = false;
-const THRESH_DEFAULT = 5;
-const OPERATION_DEFAULT = true;
+const THRESH_DEFAULT = 0;
+const OPERATION_DEFAULT = false;
 
-const appId = "nodejs_ttn-test";
-const accessKey = "ttn-account-v2.pQHDNoiLYjcG8_yiizN53nw4l0tSjtR2Yi-5ANEQa9k";
-const nodeID = "my_device";
+const appId = process.env.ttn_app_id || "nodejs_ttn-test";
+const accessKey = process.env.ttn_access_key || "ttn-account-v2.pQHDNoiLYjcG8_yiizN53nw4l0tSjtR2Yi-5ANEQa9k";
+const nodeID = process.env.ttn_device_id || "my_device";
 
 let _internal_status = {
     temp  : {status : STATUS_DEFAULT, threshold : THRESH_DEFAULT},
