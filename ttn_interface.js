@@ -16,8 +16,6 @@ let _internal_status = {
     water : {status : B_STATS_DEFAULT, operational : OPERATION_DEFAULT}
 };
 
-console.log(new Buffer(JSON.stringify(_internal_status)));
-
 function send_message(type, message) {
     ttn.data(appId, accessKey).then( (client)=> {
         let n_obj = {};
@@ -100,7 +98,7 @@ function _encode_payload(type, message) {
             break;
         case "alert":
             //Boolean encoding
-            if(typeof message === "boolean")  return {message:new Buffer(message.toString()), port:4,};
+            if(typeof message === "boolean")  return {message:new Buffer(message.toString()), port:5,};
             break;
     }
     throw new Error("TypeError");
