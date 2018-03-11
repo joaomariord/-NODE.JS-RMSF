@@ -1,7 +1,6 @@
-require("./config.js");
-
 const express = require('express');
 const bodyParser = require('body-parser');
+const ttn_interface = require("./ttn_interface");
 
 const STATUS_DEFAULT = 0;
 const BSTATS_DEFAULT = false;
@@ -13,59 +12,47 @@ let data = {
   gas   : {status : STATUS_DEFAULT, threshold : THRESH_DEFAULT},
   alert : {status : BSTATS_DEFAULT, operational : OPERAT_DEFAULT},
   water : {status : BSTATS_DEFAULT, operational : OPERAT_DEFAULT}
-}
+};
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
-var app = express();
+let app = express();
 const PORT = process.env.PORT || 80;
 
-app.use('/', express.static('public'))
+app.use('/', express.static('public'));
 
 app.use(bodyParser.json());
 
 app.post("/thr/gas",(req, res) => { //Set the new threshold for gas
-  data.gas.threshold = req.body.set;
+  ttn_interface.send_message("gas", req.body.set);
   res.status(200).send();
 });
 
 app.post("/thr/temp", (req, res) => { //Set the new threshold for temperatures
-  data.temp.threshold = req.body.set;
+  ttn_interface.send_message("temperature", req.body.set);
   res.status(200).send();
 });
 
 app.post("/set/alrt", (req, res) => { //Set the on or off state of the buzzer alarm
-  data.alert.operational = req.body.set;
+  ttn_interface.send_message("alert", req.body.set);
   res.status(200).send();
 });
 
 app.post("/set/wtr",(req, res) => { //Set the on or off state of the water pump
-  data.water.operational = req.body.set;
+  ttn_interface.send_message("water", req.body.set);
   res.status(200).send();
 });
 
 app.get("/status", (req, res) => { //Get the most updated status of temperature, gas, alarm and pump
-  data.temp.status  = getRandomInt(10)+20;
-  data.gas.status   = getRandomInt(100)+1000;
-  if(data.temp.status > data.temp.threshold || data.gas.status > data.gas.threshold){
-    data.alert.status = true;
-    data.water.status = false;
-  }
-  if (data.temp.status > data.temp.threshold && data.gas.status > data.gas.threshold){
-    data.water.status = true;
-  }
-  if(data.temp.status <= data.temp.threshold && data.gas.status <= data.gas.threshold){
-    data.water.status = false;
-    data.alert.status = false;
-  }
-
-  res.send(data);
+    res.send(ttn_interface.get_status());
 });
 
 app.listen(PORT, () => {
   console.log("Started on port " + PORT);
 });
+
+ttn_interface.initialize();
 
 module.exports = {app};
