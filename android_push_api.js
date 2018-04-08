@@ -31,9 +31,9 @@ function SaveToken(token) {
     })
 }
 
-const sendNotifications = (data) => {
+const sendNotifications = (notification) => {
 
-    const dataString = JSON.stringify(data)
+    const dataString = JSON.stringify(notification)
 
     const headers = {
         'Authorization': 'key=' + ApiKey,
@@ -45,7 +45,7 @@ const sendNotifications = (data) => {
         uri: 'https://fcm.googleapis.com/fcm/send',
         method: 'POST',
         headers: headers,
-        json: data
+        json: notification
     }
 
     request(options, function (err, res, body) {
