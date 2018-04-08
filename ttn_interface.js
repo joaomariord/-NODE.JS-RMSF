@@ -1,6 +1,6 @@
 let ttn = require("ttn");
 
-const push = require("android_push_api")
+const push = require("./android_push_api")
 
 const STATUS_DEFAULT = 0;
 const B_STATS_DEFAULT = false;

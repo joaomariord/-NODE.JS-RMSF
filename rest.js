@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ttn_interface = require("./ttn_interface");
-const push = require("android_push_api")
+const push = require("./android_push_api")
 
 let app = express();
-const MongoClient = mongo.MongoClient
+const PORT = process.env.PORT || 80;
+
 
 app.use('/', express.static('public'));
 
@@ -38,8 +39,9 @@ app.post('/store', (req, res) => {
   try{
     push.SaveToken(req.body)
     res.status(200).send()
-  } catch {
+  } catch (error) {
     res.status(400).send()
+    console.error(error)
   }
 })
 
