@@ -12,16 +12,21 @@ app.use(bodyParser.urlencoded({
 
 const MongoClient = mongo.MongoClient
 
-const url = process.env.MONGODB_URI
+const url = process.env.MONGODB_URI || "mongodb://heroku_49mrdg0x:bkllahlbeljncb6t2vi7uojkfv@ds261088.mlab.com:61088/heroku_49mrdg0x"
 const ApiKey = "AIzaSyD3IP3CN3td1rQmpnJE-20MqSlUUkNTmfY"
 
 function SaveToken(token) {
     MongoClient.connect(url, (err, db) => {
         if (err) throw err
         else {
-            db.collection('tokens').insertOne(token, (err, body) => {
-                if (err) throw err
+            db.collection('tokens').find(token).toArray((err, found) => {
+                if(found.length === 0){
+                    db.collection('tokens').insertOne(token, (err, body) => {
+                        if (err) throw err
+                    })
+                }
             })
+
         }
         db.close()
     })
