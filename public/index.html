@@ -98,7 +98,7 @@ Although you can use them, for a more unique website, replace these images with 
                 <div class="col-sm-6">
                 	<h2 class="section-header">Being done for community</h2>
                 	<p class="lead text-muted">After the development is complete and its delivered to teacher, the contents of the development will be public in github.</p>
-                    <p class="lead text-muted">This project is composed of a Android Application, a Cloud Application and a Arduino Application, the communication is made using <a href="https://www.thethingsnetwork.org/docs/lorawan/">LoRaWAN</a>, <a href="https://www.thethingsnetwork.org/">TTN</a>, <a href="https://expressjs.com/">Express.js</a> and <a href="http://loopj.com/android-async-http/">Android Async HTTP Client</a>. </p>
+                    <p class="lead text-muted">This project is composed of a Android Application, a Cloud Application and a Arduino Application, the communication is made using <a href="https://www.thethingsnetwork.org/docs/lorawan/">LoRaWAN</a>, <a href="https://www.thethingsnetwork.org/">TTN</a>, <a href="https://expressjs.com/">Express.js</a> and <a href="https://developer.android.com/training/volley/index.html">Android Volley</a>. </p>
                 </div>
             </div>
         </div>
@@ -109,7 +109,7 @@ Although you can use them, for a more unique website, replace these images with 
         <div class="container">
             <h1 class="section-header">Api Docs</h1>
             <div class="row">
-                <div class="col-sm-6"
+                <div class="col-sm-6">
                 	<h2 class="lead text-light">GET routes</h2>
                     <h3 class="text-light">/status route</h3>
                     <p class="text-light">Gives back a JSON object with 4 objects:</p>
@@ -120,8 +120,11 @@ Although you can use them, for a more unique website, replace these images with 
                       <li><i class="fa-li fa fa-check-square text-light"></i>water  <span style="color: #42adf4">&rarr;</span> Water Pump status and operational status</li>
                     </ul>
                     <a href="../status" class="btn btn-default btn-lg">Test It <span style="color: #42adf4">&rarr;</span> Status</a>
+                    <h2 class="lead text-light">Authentication</h2>
+                    <p class="text-light">To authenticate every post method must have a Auth-Token key-value pair on the request body.</p>
+                    <p class="text-light">The token must be provided by the administrator.</p>
                 </div>
-                <div class="col-sm-6"
+                <div class="col-sm-6">
                 	<h2 class="lead text-light">POST routes</h2>
                     <h3 class="text-light">/thr route</h3>
                     <p class="text-light">Has two children routes: /temp and /gas</p>
@@ -129,8 +132,11 @@ Although you can use them, for a more unique website, replace these images with 
                     <h3 class="text-light">/set route</h3>
                     <p class="text-light">Has two children routes: /alrt and /wtr</p>
                     <p class="text-light">Posting a JSON in the body with a "set" object will configure the functioning of the alarm (/alrt) or water pump (/wtr), to the value of "set", must be a boolean.</p>
+                    <h3 class="text-light">/store route</h3>
+                    <p class="text-light">Posting a JSON in the body with a "token" object will configure the FCM function (message push service) to your device.</p>
+                    <p class="text-light">This route should be used only by iOS or Android apps implementing Firebase Cloud Message.</p>
 
-                    <div class="btn btn-default btn-lg postman-run-button"
+            <div class="btn btn-default btn-lg postman-run-button"
                     data-postman-action="collection/import"
                     data-postman-var-1="7e0a54f36de1a68b69f0"></div>
                 </div>
@@ -146,8 +152,8 @@ Although you can use them, for a more unique website, replace these images with 
         <div class="contact">
         	<div class="container">
 				<h2 class="section-heading">Contact Us</h2>
-				<p><span class="glyphicon glyphicon-earphone"></span><br> liga para a tua mãe e é se queres</p>
-				<p><span class="glyphicon glyphicon-envelope"></span><br> não tens o mail dela é ??</p>
+                <p><span class="glyphicon glyphicon-envelope"></span><br>joao.mario@tecnico.ulisboa.pt</p>
+                <p><span class="glyphicon glyphicon-envelope"></span><br>valtermario@tecnico.ulisboa.pt</p>
         	</div>
         </div>
 
