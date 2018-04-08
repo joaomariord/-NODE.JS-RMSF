@@ -22,13 +22,12 @@ function SaveToken(token) {
             db.collection('tokens').find(token).toArray((err, found) => {
                 if(found.length === 0){
                     db.collection('tokens').insertOne(token, (err, body) => {
+                        db.close()
                         if (err) throw err
                     })
                 }
             })
-
         }
-        db.close()
     })
 }
 
