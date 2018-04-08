@@ -1,5 +1,7 @@
 let ttn = require("ttn");
 
+const push = require("android_push_api")
+
 const STATUS_DEFAULT = 0;
 const B_STATS_DEFAULT = false;
 const THRESH_DEFAULT = 0;
@@ -34,8 +36,12 @@ function start_listener() {
     ttn.data(appId, accessKey)
         .then((client)=>{
             client.on("message", (devID, payload)=>{
+                let severity = 0
                 try {
                     _internal_status = _decode_payload(payload);
+                    severity = isAboveThreshold()
+                    if(severity>0)
+                        push.sendNotificationsOnSeverity(severity)
                 }
                 catch (err) {
                     if(err.message === "PortError"){
@@ -102,6 +108,20 @@ function _encode_payload(type, message) {
             break;
     }
     throw new Error("TypeError");
+}
+
+
+// Severity Levels : 0 -> None; 1 -> temperature alert; 2 -> gas alert; 3 -> Full Alert
+function isAboveThreshold() {
+    let severityLevel = 0
+    if(_internal_status.temp.status > _internal_status.temp.threshold){
+        severityLevel += 1
+    }
+    if(_internal_status.gas.status > _internal_status.gas.threshold){
+        severityLevel += 2
+    }
+    return severityLevel
+
 }
 
 module.exports = {

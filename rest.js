@@ -1,9 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ttn_interface = require("./ttn_interface");
+const push = require("android_push_api")
 
 let app = express();
-const PORT = process.env.PORT || 80;
+const MongoClient = mongo.MongoClient
 
 app.use('/', express.static('public'));
 
@@ -32,6 +33,15 @@ app.post("/set/wtr",(req, res) => { //Set the on or off state of the water pump
 app.get("/status", (req, res) => { //Get the most updated status of temperature, gas, alarm and pump
     res.send(ttn_interface.get_status());
 });
+
+app.post('/store', (req, res) => {
+  try{
+    push.SaveToken(req.body)
+    res.status(200).send()
+  } catch {
+    res.status(400).send()
+  }
+})
 
 app.listen(PORT, () => {
   console.log("Started on port " + PORT);
