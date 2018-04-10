@@ -45,6 +45,45 @@ app.post('/store', (req, res) => {
   }
 })
 
+//AUTH ROUTES
+app.post("/register", (req, res) =>{
+    res.status(501).send();
+});
+
+app.post("/login", (req, res) =>{
+    res.status(501).send();
+});
+
+app.post("/logout", (req, res) =>{
+    res.status(501).send();
+});
+
+//APPLICATION AND DEVICE ROUTES
+app.post("/application", (req, res) =>{
+    res.status(501).send();
+});
+
+app.post("/device", (req, res) =>{
+    res.status(501).send();
+});
+
+app.delete("/application", (req, res) =>{
+    res.status(501).send();
+});
+
+app.delete("/device", (req, res) =>{
+    res.status(501).send();
+});
+
+app.get("/application", (req, res) =>{
+    res.status(501).send();
+});
+
+app.get("/device", (req, res) =>{
+    res.status(501).send();
+});
+
+
 app.listen(PORT, () => {
   console.log("Started on port " + PORT);
 });
