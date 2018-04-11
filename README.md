@@ -6,7 +6,7 @@ Server application for RMSF project.
 Instructions: 
 > Developed in node.js (careful with changes), the code is very clean and simple, but some files are not yet used, just there for future development
 
-> Main file and only to look at now is rest.js, this has the server and api working.
+> Main file and only to look at now is rmsf_server.js, this has the server and api working.
 
 > This github repository is linked to a online application deployer at heroku.com, follow the link: https://rmsf-server.herokuapp.com/ to access the server
 

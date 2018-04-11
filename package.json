@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node rest.js"
+    "start": "node rmsf_server.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "nodemon": "^1.17.1",
     "request": "^2.85.0",
     "ttn": "^2.3.1",
-    "validator": "^9.4.1"
+    "validator": "^9.4.1",
+    "async": "latest"
   }
 }

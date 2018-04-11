@@ -100,6 +100,12 @@ TTNSchema.methods.setDeviceStatus = function (appID, deviceID, deviceStatus) { /
     });
 };
 
+TTNSchema.statics.findAll= function () {
+    return this.find({}).then( (all) => {
+        if(!all) return Promise.reject()
+        return new Promise( (resolve => resolve(all)))
+    });
+};
 
 TTNSchema.statics.findByUserId= function (userId) {
     let user = this;
