@@ -3,7 +3,7 @@ const {TTNModel} = require("./../Models/ttn_devices");
 const test = new TTNModel({
     user_id:"myID",
     applications:[]
-})
+});
 /*
 test.save().then(()=>{
     console.log("Added entry")
@@ -14,7 +14,7 @@ const deviceStatus = {
     temp  : {status : "TS", threshold : "TT"},
     gas   : {status : "GS", threshold : "GT"},
     alert : {status : "AS", operational : "AO"},
-    water : {status : "WS", operational : "WO"}}
+    water : {status : "WS", operational : "WO"}};
 
 TTNModel.findByUserId("myID").then(async (entry)=>{
     console.log("Entry found")
@@ -27,15 +27,15 @@ TTNModel.findByUserId("myID").then(async (entry)=>{
 
 }).catch((e)=>{
     console.log("No record found from userID: "+e)
-})
+});
 
 TTNModel.findAllByAppID("myApp2ID").then(async (entry)=>{
-    console.log("App found")
+    console.log("App found");
     console.log(entry)
 
 }).catch((e)=>{
     console.log("No record found from appID: "+e)
-})
+});
 
 TTNModel.findAllByDeviceID("myDevice2ID").then(async (entry)=>{
     console.log("Device found")
@@ -43,4 +43,4 @@ TTNModel.findAllByDeviceID("myDevice2ID").then(async (entry)=>{
 
 }).catch((e)=>{
     console.log("No record found from deviceID: "+e)
-})
+});

@@ -1,6 +1,6 @@
 let ttn = require("ttn");
 
-const push = require("./android_push_api")
+const push = require("./android_push_api");
 const Token = require("../Models/push_token").Token;
 const TTNModel = require("../Models/ttn_devices").TTNModel;
 
@@ -9,7 +9,7 @@ const B_STATS_DEFAULT = false;
 const THRESH_DEFAULT = 0;
 const OPERATION_DEFAULT = false;
 
-let applications_listening = []
+let applications_listening = [];
 
 let _internal_status = {
     temp  : {status : STATUS_DEFAULT, threshold : THRESH_DEFAULT},
@@ -42,14 +42,14 @@ function start_listener(appID, appKey) {
     }
     ttn.data(appID, appKey)
         .then((client)=>{
-            applications_listening.push(appID)
+            applications_listening.push(appID);
             client.on("message", async (devID, payload)=>{
                 //In the payload field we have access to the app_id and dev_id, so we can send the
                 // push message and save the data in the respective devices
 
                 //First get app_id and dev_id
-                const appID = payload.app_id
-                const deviceID = payload.dev_id
+                const appID = payload.app_id;
+                const deviceID = payload.dev_id;
 
                 //Now try to understand the message
                 try {
@@ -68,14 +68,14 @@ function start_listener(appID, appKey) {
                 //No errors, so status is good
                 // Find each user that has this device and application registered
                 try {
-                    const usersArray = await TTNModel.findAllByDeviceID(deviceID)
+                    const usersArray = await TTNModel.findAllByDeviceID(deviceID);
                     let validUsersArray = usersArray.filter((user) => { //See each correspondence
                            return user.applications.findIndex(app => app.appID === appID) !== -1;
-                        }).map(x=>x.user_id)
+                        }).map(x=>x.user_id);
                     //From each value of validUsersArray get respective tokens to one array
                     let tokenArray = [];
                     for (let index = 0; index < validUsersArray.length; index ++){
-                        const token_doc = await Token.findByUserId(validUsersArray[index])
+                        const token_doc = await Token.findByUserId(validUsersArray[index]);
                         if(token_doc !== undefined){
                             //tokenArray.concat(token_doc.tokens.map(x=>x.token))
                             tokenArray = tokenArray.concat(token_doc.tokens.map(x=>x.token))
@@ -94,7 +94,7 @@ function start_listener(appID, appKey) {
 
                 //Now fill all devices in apps with the incoming result
                 try {
-                    const usersArray = await TTNModel.findAllByDeviceID(deviceID)
+                    const usersArray = await TTNModel.findAllByDeviceID(deviceID);
                     usersArray.forEach(async (user) => {
                         await user.setDeviceStatus(appID,deviceID,_internal_status)
                     })

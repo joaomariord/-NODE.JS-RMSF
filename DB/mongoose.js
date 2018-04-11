@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-const database_url = process.env.MONGODB_URI || "mongodb://heroku_49mrdg0x:bkllahlbeljncb6t2vi7uojkfv@ds261088.mlab.com:61088/heroku_49mrdg0x"
+// noinspection SpellCheckingInspection
+const database_url = process.env.MONGODB_URI || "mongodb://heroku_49mrdg0x:bkllahlbeljncb6t2vi7uojkfv@ds261088.mlab.com:61088/heroku_49mrdg0x";
 
 mongoose.Promise = global.Promise; //Set default library to handle promise
 mongoose.connect(database_url).then(() => {
@@ -13,4 +14,4 @@ mongoose.connect(database_url).then(() => {
 
 module.exports = {
     mongoose: mongoose
-}
+};

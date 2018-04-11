@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{html5shiv, respond}" />
+    <file url="PROJECT" libraries="{@types/bcryptjs, @types/body-parser, @types/express, @types/jsonwebtoken, @types/lodash, @types/request, @types/validator, html5shiv, respond}" />
     <includedPredefinedLibrary name="Node.js Core" />
   </component>
 </project>

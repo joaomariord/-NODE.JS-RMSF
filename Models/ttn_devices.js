@@ -40,9 +40,10 @@ TTNSchema.methods.removeDevice = function (appID, deviceID) {
 
     entry.applications.forEach((app) => {
         if(app.appID === appID){
+            // noinspection JSUndefinedPropertyAssignment
             app.devices = app.devices.filter(x => x.deviceID !== deviceID)
         }
-    })
+    });
     return entry.save().then(() => {
         return deviceID;
     });
@@ -70,7 +71,7 @@ TTNSchema.methods.addDevice = function (appID, deviceID) {
                     water : {}
                 }})
         }
-    })
+    });
     return entry.save().then(() => {
         return appID;
     });
@@ -83,18 +84,18 @@ TTNSchema.methods.setDeviceStatus = function (appID, deviceID, deviceStatus) { /
         if(app.appID === appID){
             app.devices.forEach((device)=>{
                 if(device.deviceID === deviceID){
-                    device.deviceStatus.alert.operational = deviceStatus.alert.operational
-                    device.deviceStatus.alert.status = deviceStatus.alert.status
-                    device.deviceStatus.gas.threshold = deviceStatus.gas.threshold
-                    device.deviceStatus.gas.status = deviceStatus.gas.status
-                    device.deviceStatus.water.operational = deviceStatus.water.operational
-                    device.deviceStatus.water.status = deviceStatus.water.status
-                    device.deviceStatus.temp.threshold = deviceStatus.temp.threshold
+                    device.deviceStatus.alert.operational = deviceStatus.alert.operational;
+                    device.deviceStatus.alert.status = deviceStatus.alert.status;
+                    device.deviceStatus.gas.threshold = deviceStatus.gas.threshold;
+                    device.deviceStatus.gas.status = deviceStatus.gas.status;
+                    device.deviceStatus.water.operational = deviceStatus.water.operational;
+                    device.deviceStatus.water.status = deviceStatus.water.status;
+                    device.deviceStatus.temp.threshold = deviceStatus.temp.threshold;
                     device.deviceStatus.temp.status = deviceStatus.temp.status
                 }
             })
         }
-    })
+    });
     return entry.save().then(() => {
         return appID;
     });
@@ -102,7 +103,7 @@ TTNSchema.methods.setDeviceStatus = function (appID, deviceID, deviceStatus) { /
 
 TTNSchema.statics.findAll= function () {
     return this.find({}).then( (all) => {
-        if(!all) return Promise.reject()
+        if(!all) return Promise.reject();
         return new Promise( (resolve => resolve(all)))
     });
 };

@@ -1,4 +1,4 @@
-const {Token} = require("./../Models/push_token")
+const {Token} = require("./../Models/push_token");
 /*
 let newTok = new Token({
     user_id: "55541231231",
@@ -35,7 +35,7 @@ const ret = Token.findByToken("token22222222").then((some) => {
     })
 }).catch((error)=>{
     console.log("No match find")
-})
+});
 
 //ret.removeToken("token333333333")
 

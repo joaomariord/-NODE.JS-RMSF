@@ -66,6 +66,7 @@ UserSchema.statics.findByToken = function (token) {
     let decoded;
 
     try {
+        // noinspection SpellCheckingInspection
         decoded = jwt.verify(token, process.env.JWT_SECRET||"thisisasecret");
     } catch (e) {
         return Promise.reject();
@@ -83,7 +84,7 @@ UserSchema.pre("save", function (next) {
 
     if(user.isModified("password")) {
         bcrypt.genSalt(10,(err, salt) => {
-            if(err){ return console.log(err); next();}
+            if(err){ console.log(err); next();}
             bcrypt.hash(user.password, salt, (err, hash) => {
                 if(err){console.log(err); next();}
                 user.password = hash;
@@ -106,6 +107,8 @@ UserSchema.methods.toJSON = function () {
 UserSchema.methods.generateAuthToken = function () {
     let user = this;
     let access = "auth";
+    // noinspection SpellCheckingInspection
+    // noinspection SpellCheckingInspection
     let token = jwt.sign({_id: user._id.toHexString(), access}, process.env.JWT_SECRET||"thisisasecret").toString();
 
     user.tokens.push({access, token});
