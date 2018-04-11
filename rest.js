@@ -17,22 +17,23 @@ app.use('/', express.static('public'));
 
 app.use(bodyParser.json());
 
-app.post("/thr/gas",(req, res) => { //Set the new threshold for gas
-  ttn_interface.send_message("gas", req.body.set);
+app.post("/device/thr/gas", authenticate, async (req, res) => { //Set the new threshold for gas
+    //redirect to ttn based on account info -> (appID, appKey, deviceID), appID and/or deviceID are given in the request, along with the set parameter
+    ttn_interface.send_message("gas", req.body.set);
   res.status(200).send();
 });
 
-app.post("/thr/temp", (req, res) => { //Set the new threshold for temperatures
+app.post("/device/thr/temp", authenticate, async (req, res) => { //Set the new threshold for temperatures
   ttn_interface.send_message("temperature", req.body.set);
   res.status(200).send();
 });
 
-app.post("/set/alrt", (req, res) => { //Set the on or off state of the buzzer alarm
+app.post("/device/set/alrt", authenticate, async (req, res) => { //Set the on or off state of the buzzer alarm
   ttn_interface.send_message("alert", req.body.set);
   res.status(200).send();
 });
 
-app.post("/set/wtr",(req, res) => { //Set the on or off state of the water pump
+app.post("/device/set/wtr", authenticate, async (req, res) => { //Set the on or off state of the water pump
   ttn_interface.send_message("water", req.body.set);
   res.status(200).send();
 });
@@ -64,7 +65,7 @@ app.post("/register", async (req, res) =>{
     }
 });
 
-//Logins a user, sends him is user name and email. Associates the given Push token with this account
+//Logs in a user, sends him is user name and email. Associates the given Push token with this account
 app.post("/login", async (req, res) =>{
     try {
         const user_req = _.pick(req.body, ["email", "password"]);
@@ -194,22 +195,76 @@ app.post("/device", authenticate , async (req, res) =>{
     }
 });
 
-app.delete("/application", (req, res) =>{
-    res.status(501).send();
+//Deletes a app and children
+app.delete("/application", authenticate ,async (req, res) =>{
+    const user_id= _.pick(req.user, "_id")._id.toString();
+    try {
+        const ttn_entries = await TTNModel.findAllByAppID(req.body.appID)
+        let index = ttn_entries.findIndex(each => each.user_id === user_id)
+        const ttn_entry_to_remove = ttn_entries[index]
+        await ttn_entry_to_remove.removeApplication(req.body.appID)
+        res.status(200).send({appID: req.body.appID})
+        console.log("App removed")
+    }catch (e){
+        console.log("App was not removed: "+e)
+        res.status(400).send(e)
+    }
 });
 
-app.delete("/device", (req, res) =>{
-    res.status(501).send();
+//Deletes a device
+app.delete("/device", authenticate , async (req, res) =>{
+    const user_id= _.pick(req.user, "_id")._id.toString();
+    try {
+        const ttn_entries = await TTNModel.findAllByAppID(req.body.appID)
+        let index = ttn_entries.findIndex(each => each.user_id === user_id)
+        const ttn_entry_to_remove = ttn_entries[index]
+        await ttn_entry_to_remove.removeDevice(req.body.appID, req.body.deviceID)
+        res.status(200).send({appID: req.body.appID, deviceID: req.body.deviceID})
+        console.log("Device removed")
+    }catch (e){
+        console.log("Device was not removed: "+e)
+        res.status(400).send(e)
+    }
 });
 
-app.get("/application", (req, res) =>{
-    res.status(501).send();
+//Gets application info
+app.get("/application", authenticate, async (req, res) =>{
+    const user_id= _.pick(req.user, "_id")._id.toString();
+    try {
+        const ttn_entries = await TTNModel.findAllByAppID(req.query.appID)
+        let index = ttn_entries.findIndex(each => each.user_id === user_id)
+        const ttn_entry_to_send = ttn_entries[index]
+        const appIndex = ttn_entry_to_send.applications.findIndex(each => each.appID === req.query.appID)
+        res.status(200).send(ttn_entry_to_send.applications[appIndex])
+        console.log("Application data sent")
+    }catch (e){
+        console.log("Application not found: "+e)
+        res.status(400).send(e)
+    }
 });
 
-app.get("/device", (req, res) =>{
-    res.status(501).send();
-});
+//Gets device info
+app.get("/device",authenticate, async (req, res) =>{
+    const user_id= _.pick(req.user, "_id")._id.toString();
+    try {
+        const ttn_entries = await TTNModel.findAllByDeviceID(req.query.deviceID)
+        let index = ttn_entries.findIndex(each => each.user_id === user_id)
+        const ttn_entry_to_send = ttn_entries[index]
+        let deviceIndex = -1, appIndex = -1
+        for( let each of ttn_entry_to_send.applications){
+            appIndex ++
+            deviceIndex = each.devices.findIndex(each => each.deviceID === req.query.deviceID)
+            if(deviceIndex !== -1) break
+        }
+        if (appIndex > ttn_entry_to_send.applications.length) appIndex = -1
 
+        res.status(200).send(ttn_entry_to_send.applications[appIndex].devices[deviceIndex])
+        console.log("Device data sent")
+    }catch (e){
+        console.log("Device not found: "+e)
+        res.status(400).send(e)
+    }
+});
 
 app.listen(PORT, () => {
   console.log("Started on port " + PORT);
