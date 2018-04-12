@@ -16,7 +16,7 @@ async function send_ttn_message(route ,req, res) {
     const user_id= _.pick(req.user, "_id")._id.toString();
     let index = -1;
     if(typeof route !== "string"){
-        res.status(501).send();
+        res.status(501).send({});
         throw new TypeError("Route must be a string")
     }
     try {
@@ -29,7 +29,7 @@ async function send_ttn_message(route ,req, res) {
             console.log("App found in users apps");
             let appKey = ttn_entry.applications[index].appKey;
             ttn_interface.send_message(route, req.body.set, req.body.appID, appKey, req.body.deviceID);
-            res.status(200).send()
+            res.status(200).send({})
         }
     }
     catch (e) {
@@ -86,7 +86,7 @@ app.post('/store', authenticate, async (req, res) => {
         const OldUser = await Token.findByUserId(_.pick(req.user, "_id")._id.toString());
         await OldUser.addToken(push_req_token);
         console.log("Token added to user");
-        res.status(200).send()
+        res.status(200).send({})
     } catch (e){ //User doesn't exist
         console.log("Cannot add token to user: " + e);
         res.status(400).send({msg: "User doesn't exist"})
@@ -146,7 +146,7 @@ app.post("/login", async (req, res) =>{
         res.header("x-auth", token).send(user);
     } catch (e) {
         console.log(e);
-        res.status(400).send();
+        res.status(400).send({});
     }
 });
 
@@ -163,9 +163,9 @@ app.post("/logout", authenticate, async (req,res) => {
             console.log("Cannot delete token: " + e)
         }
 
-        res.status(200).send();
+        res.status(200).send({});
     } catch (e) {
-        res.status(400).send();
+        res.status(400).send({});
     }
 });
 
@@ -184,7 +184,7 @@ app.post("/application", authenticate , async (req, res) =>{
             appCreated = true
         }
         else {
-            res.status(409).send();
+            res.status(409).send({});
             console.log("App already present")
         }
     }
@@ -229,12 +229,12 @@ app.post("/device", authenticate , async (req, res) =>{
                     res.send({appID:req.body.appID, appKey:req.body.deviceID});
                     console.log("Device added")
                 }else {
-                    res.status(409).send();
+                    res.status(409).send({});
                     console.log("Device already present")
                 }
             } catch (e){
                 console.log("Cannot add device: "+e);
-                res.status(400).send()
+                res.status(400).send({})
             }
         }
     }
