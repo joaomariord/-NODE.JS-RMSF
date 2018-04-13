@@ -226,7 +226,7 @@ app.post("/device", authenticate , async (req, res) =>{
             try {
                 if(ttn_entry.applications[index].devices.findIndex((each)=>{ return each.deviceID === req.body.deviceID}) === -1){ //Device not present, add
                     await ttn_entry.addDevice(req.body.appID, req.body.deviceID);
-                    res.send({appID:req.body.appID, appKey:req.body.deviceID});
+                    res.send({appID:req.body.appID, deviceID:req.body.deviceID});
                     console.log("Device added")
                 }else {
                     res.status(409).send({});
@@ -314,6 +314,32 @@ app.get("/device",authenticate, async (req, res) =>{
         console.log("Device not found: "+e);
         res.status(400).send(e)
     }
+});
+
+app.get("/status", authenticate, async (req,res) => {
+    const user_id= _.pick(req.user, "_id")._id.toString();
+    try {
+        const ttn_entry = await TTNModel.findByUserId(user_id);
+        res.send(ttn_entry)
+    }
+    catch (e) {
+        console.log("Cannot find user entry: " + e);
+        console.log("Creating entry");
+        try {
+            const newEntry = new TTNModel({user_id:req.user._id,
+                applications:[]});
+            await newEntry.save();
+            console.log("New Entry Created");
+            res.send({});
+        } catch (e) {
+            console.log("Failed to create or fill new entry: " + e);
+            res.status(400).send(e)
+        }
+    }
+});
+
+app.get("/online", (req, res) => {
+   res.send({msg: "API is online"});
 });
 
 app.listen(PORT, async () => {

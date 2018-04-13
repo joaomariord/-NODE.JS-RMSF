@@ -20,7 +20,6 @@
     "nodemon": "^1.17.1",
     "request": "^2.85.0",
     "ttn": "^2.3.1",
-    "validator": "^9.4.1",
-    "async": "latest"
+    "validator": "^9.4.1"
   }
 }
