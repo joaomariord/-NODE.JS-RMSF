@@ -35,7 +35,7 @@ function send_message(type, message, appID, appKey, deviceID) {
     })
 }
 
-function start_listener(appID, appKey) {
+function start_listener(appID, appKey, userID)  {
     if(applications_listening.findIndex(x => x === appID) !== -1) //If there is one application with this id
     {
         return
@@ -83,6 +83,7 @@ function start_listener(appID, appKey) {
                     }
                     //Send final array with information
                     push.sendData({
+                        type: "refreshData",
                         deviceID,
                         appID,
                         status: _internal_status
@@ -100,6 +101,31 @@ function start_listener(appID, appKey) {
                     })
                 } catch (e) {
                     console.log("Cannot add new info to devices")
+                }
+            });
+
+            client.on("error", async (error)=> {
+                console.log("Error on application " + appID + " Error: " + error);
+                //Some error happens, invalidate application
+                console.log(`Application (${appID}) invalidated in db for this section`);
+
+                //Remove application listener
+                client.close(true, () => {
+                    //Client closed
+                    applications_listening.splice(applications_listening.findIndex(each => each === appID ), 1);
+                    console.log(`Application (${appID}) listener removed`);
+                });
+                //Send push message to user waning that app is invalid
+                try {
+                    let pushToken = await Token.findByUserId(userID);
+                    push.sendData({
+                        type:"appInvalidation",
+                        appID: appID
+                    }, pushToken.tokens.map(x=>x.token));
+                    console.log(`Notified user (${userID}) on app (${appID}) invalidation`);
+                } catch (e) {
+                    console.log(`Could not notify user (${userID}) on app (${appID}) invalidation`);
+                    console.log("Error: " + e)
                 }
             })
         })
