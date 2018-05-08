@@ -24,11 +24,12 @@ function send_message(type, message, appID, appKey, deviceID) {
         let n_obj = {};
         try {
             n_obj = _encode_payload(type, message);
+            console.log(n_obj);
         } catch (err) {
             if(err.message === "TypeError") console.error("Message type not supported");
             return;
         }
-        client.send(deviceID, n_obj.message, n_obj.port, false, "replace" );
+        client.send(deviceID, n_obj.message, n_obj.port, true, "replace" );
         console.log("Sent downlink with message: "+n_obj.message+" to port: "+n_obj.port);
     }).catch( (e)=>{
         console.log("Error connecting to app, intending to send message" + e);
@@ -53,7 +54,7 @@ function start_listener(appID, appKey, userID)  {
 
                 //Now try to understand the message
                 try {
-                    _internal_status = _decode_payload(payload);
+                    _internal_status = _model_encapsulate(_decode_payload(payload));
                 }
                 catch (err) {
                     if(err.message === "PortError"){
@@ -139,42 +140,74 @@ function _decode_payload(payload) {
     //Fill the object with info from payload.
     console.log("Payload", payload);
     if(payload.port === 1){
-        //payload_raw is buffer so we can use is methods
-        let parsed_payload = JSON.parse(payload.payload_raw);
-        if(
-            typeof parsed_payload.temp.status     === "number"  &&
-            typeof parsed_payload.temp.threshold  === "number"  &&
-            typeof parsed_payload.gas.status      === "number"  &&
-            typeof parsed_payload.gas.threshold   === "number"  &&
-            typeof parsed_payload.water.operational === "boolean" &&
-            typeof parsed_payload.water.status      === "boolean" &&
-            typeof parsed_payload.alert.status      === "boolean" &&
-            typeof parsed_payload.alert.operational === "boolean"
-        ) return parsed_payload;
-        else throw new Error("BadMessageError");
+        //payload_raw is buffer so we can use its methods
+        let parsed_payload = _internal_status;
+        parsed_payload.temp.status = payload.payload_raw.readUInt8(0);
+        parsed_payload.temp.threshold  = payload.payload_raw.readUInt8(1);
+        parsed_payload.gas.status  = payload.payload_raw.readUInt8(2);
+        parsed_payload.gas.threshold  = payload.payload_raw.readUInt8(3);
+        parsed_payload.water.status = payload.payload_raw.readUInt8(4)=== 1 ? true : false;
+        parsed_payload.water.operational   = payload.payload_raw.readUInt8(5)=== 1 ? true : false;
+        parsed_payload.alert.status  = payload.payload_raw.readUInt8(6)=== 1 ? true : false;
+        parsed_payload.alert.operational= payload.payload_raw.readUInt8(7) === 1 ? true : false;
+        return parsed_payload;
     } else {
         throw new Error("PortError");
     }
 }
 
+function _model_encapsulate(decodedPayload) {
+    decodedPayload.temp.status = decodedPayload.temp.status *100.0/255;
+    decodedPayload.temp.threshold = decodedPayload.temp.threshold *100.0/255;
+
+    decodedPayload.gas.status = decodedPayload.gas.status *100.0/255;
+    decodedPayload.gas.threshold = decodedPayload.gas.threshold *100.0/255;
+
+    return decodedPayload
+}
+
 function _encode_payload(type, message) {
     //Encode payload to message
+    const buf = Buffer.allocUnsafe(1);
     switch (type) {
-        case "temperature":
+        case "temp":
             //Double encoding
-            if(typeof message === "number")  return {message:new Buffer(message.toString()), port:2,};
+            if(typeof message === "string")
+            {
+                buf.writeUInt8(Number.parseInt(message, null),0);
+                return {message:buf, port:2,};
+            }
             break;
         case "gas":
             //Double encoding
-            if(typeof message === "number")  return {message:new Buffer(message.toString()), port:3,};
+            if(typeof message === "string")
+            {
+                buf.writeUInt8(Number.parseInt(message),0);
+                return {message:buf, port:3,};
+            }
             break;
         case "water":
             //Boolean encoding
-            if(typeof message === "boolean")  return {message:new Buffer(message.toString()), port:4,};
+            if(typeof message === "string"){
+                if(message === "true"){
+                    buf.writeUInt8(1,0);
+                }
+                else buf.writeUInt8(0,0);
+
+                return {message:buf, port:4,};
+            }
+
             break;
         case "alert":
             //Boolean encoding
-            if(typeof message === "boolean")  return {message:new Buffer(message.toString()), port:5,};
+            if(typeof message === "string"){
+                if(message === "true"){
+                    buf.writeUInt8(1,0);
+                }
+                else buf.writeUInt8(0,0);
+
+                return {message:buf, port:5,};
+            }
             break;
     }
     throw new Error("TypeError");
