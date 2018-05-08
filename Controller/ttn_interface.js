@@ -146,10 +146,10 @@ function _decode_payload(payload) {
         parsed_payload.temp.threshold  = payload.payload_raw.readUInt8(1);
         parsed_payload.gas.status  = payload.payload_raw.readUInt8(2);
         parsed_payload.gas.threshold  = payload.payload_raw.readUInt8(3);
-        parsed_payload.water.status = payload.payload_raw.readUInt8(4)=== 1 ? true : false;
-        parsed_payload.water.operational   = payload.payload_raw.readUInt8(5)=== 1 ? true : false;
-        parsed_payload.alert.status  = payload.payload_raw.readUInt8(6)=== 1 ? true : false;
-        parsed_payload.alert.operational= payload.payload_raw.readUInt8(7) === 1 ? true : false;
+        parsed_payload.water.status = payload.payload_raw.readUInt8(4) === 1;
+        parsed_payload.water.operational   = payload.payload_raw.readUInt8(5) === 1;
+        parsed_payload.alert.status  = payload.payload_raw.readUInt8(6) === 1;
+        parsed_payload.alert.operational= payload.payload_raw.readUInt8(7) === 1;
         return parsed_payload;
     } else {
         throw new Error("PortError");
@@ -174,7 +174,7 @@ function _encode_payload(type, message) {
             //Double encoding
             if(typeof message === "string")
             {
-                buf.writeUInt8(Number.parseInt(message, null),0);
+                buf.writeUInt8(Number.parseFloat(message)*255/100,0);
                 return {message:buf, port:2,};
             }
             break;
@@ -182,7 +182,7 @@ function _encode_payload(type, message) {
             //Double encoding
             if(typeof message === "string")
             {
-                buf.writeUInt8(Number.parseInt(message),0);
+                buf.writeUInt8(Number.parseFloat(message)*255/100,0);
                 return {message:buf, port:3,};
             }
             break;
