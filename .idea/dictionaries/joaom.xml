@@ -5,6 +5,7 @@
       <w>bcrypt</w>
       <w>downlink</w>
       <w>errmsg</w>
+      <w>lastseen</w>
       <w>minlength</w>
     </words>
   </dictionary>

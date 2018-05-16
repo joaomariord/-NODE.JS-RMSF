@@ -17,7 +17,8 @@ let TTNSchema = mongoose.Schema({
                 temp  : {status : String, threshold : String},
                 gas   : {status : String, threshold : String},
                 alert : {status : String, operational : String},
-                water : {status : String, operational : String}
+                water : {status : String, operational : String},
+                lastseen : String
             }
         }]
     }]
@@ -91,7 +92,8 @@ TTNSchema.methods.setDeviceStatus = function (appID, deviceID, deviceStatus) { /
                     device.deviceStatus.water.operational = deviceStatus.water.operational;
                     device.deviceStatus.water.status = deviceStatus.water.status;
                     device.deviceStatus.temp.threshold = deviceStatus.temp.threshold;
-                    device.deviceStatus.temp.status = deviceStatus.temp.status
+                    device.deviceStatus.temp.status = deviceStatus.temp.status;
+                    device.deviceStatus.lastseen = deviceStatus.lastseen; //Put time stamp here
                 }
             })
         }

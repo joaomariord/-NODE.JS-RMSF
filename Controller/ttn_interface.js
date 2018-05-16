@@ -8,6 +8,7 @@ const STATUS_DEFAULT = 0;
 const B_STATS_DEFAULT = false;
 const THRESH_DEFAULT = 0;
 const OPERATION_DEFAULT = false;
+const LASTSEEN_DEFAULT = NaN;
 
 let applications_listening = [];
 
@@ -15,7 +16,8 @@ let _internal_status = {
     temp  : {status : STATUS_DEFAULT, threshold : THRESH_DEFAULT},
     gas   : {status : STATUS_DEFAULT, threshold : THRESH_DEFAULT},
     alert : {status : B_STATS_DEFAULT, operational : OPERATION_DEFAULT},
-    water : {status : B_STATS_DEFAULT, operational : OPERATION_DEFAULT}
+    water : {status : B_STATS_DEFAULT, operational : OPERATION_DEFAULT},
+    lastseen : LASTSEEN_DEFAULT
 };
 
 //Sends a message to any device, static function
@@ -150,6 +152,7 @@ function _decode_payload(payload) {
         parsed_payload.water.operational   = payload.payload_raw.readUInt8(5) === 1;
         parsed_payload.alert.status  = payload.payload_raw.readUInt8(6) === 1;
         parsed_payload.alert.operational= payload.payload_raw.readUInt8(7) === 1;
+        parsed_payload.lastseen = Date.now();
         return parsed_payload;
     } else {
         throw new Error("PortError");
