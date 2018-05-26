@@ -53,7 +53,7 @@ Although you can use them, for a more unique website, replace these images with 
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="../status">Status</a>
+                        <a href="../online">Is it up and running?</a>
                     </li>
                     <li>
                         <a href="#api_docs">Api docs</a>
@@ -110,37 +110,118 @@ Although you can use them, for a more unique website, replace these images with 
             <h1 class="section-header">Api Docs</h1>
             <div class="row">
                 <div class="col-sm-6">
-                	<h2 class="lead text-light">GET routes</h2>
-                    <h3 class="text-light">/status route</h3>
-                    <p class="text-light">Gives back a JSON object with 4 objects:</p>
-                    <ul class="fa-ul">
-                      <li><i class="fa-li fa fa-check-square text-light"></i>temp  <span style="color: #42adf4">&rarr;</span> Temperature measured value and currently configured threshold</li>
-                      <li><i class="fa-li fa fa-check-square text-light"></i>gas  <span style="color: #42adf4">&rarr;</span> Gas measured value and currently configured threshold</li>
-                      <li><i class="fa-li fa fa-check-square text-light"></i>alert  <span style="color: #42adf4">&rarr;</span> Alert status and operational status</li>
-                      <li><i class="fa-li fa fa-check-square text-light"></i>water  <span style="color: #42adf4">&rarr;</span> Water Pump status and operational status</li>
-                    </ul>
-                    <a href="../status" class="btn btn-default btn-lg">Test It <span style="color: #42adf4">&rarr;</span> Status</a>
-                    <h2 class="lead text-light">Authentication</h2>
-                    <p class="text-light">To authenticate every post method must have a Auth-Token key-value pair on the request body.</p>
-                    <p class="text-light">The token must be provided by the administrator.</p>
+                    <!-- AUTH ROUTES -->
+                	<h2 class="lead color-me">AUTHENTICATION routes</h2>
+
+                    <h3 class="text-light">POST /register</h3>
+                    <p class="text-light">Expects email, password and name</p>
+                    <p class="text-light">On success returns: Info on new user, 200 OK</p>
+                    <p class="text-light">On failure returns: 400, and error message</p>
+
+                    <h3 class="text-light">POST /login</h3>
+                    <p class="text-light">Expects email, password and token_push (for FCM functionality)</p>
+                    <p class="text-light">This will configure a new token to FCM function (message push service) to handle push messages to your client device.</p>
+                    <p class="text-light">This token_push param must only be set when the client side application supports Firebase Cloud Message.</p>
+                    <p class="text-light">On success returns: Info on logged user, 200 OK and x-auth token in header</p>
+                    <p class="text-light">On failure returns: 400</p>
+
+                    <h3 class="text-light">POST /logout</h3>
+                    <p class="text-light">Expects user to be authenticated and expects push token (if exists)</p>
+                    <p class="text-light">On success returns: 200 OK</p>
+                    <p class="text-light">On failure returns: 400</p>
                 </div>
                 <div class="col-sm-6">
-                	<h2 class="lead text-light">POST routes</h2>
-                    <h3 class="text-light">/thr route</h3>
-                    <p class="text-light">Has two children routes: /temp and /gas</p>
-                    <p class="text-light">Posting a JSON in the body with a "set" object will configure threshold of temperature (/temp) or gas (/gas), to the value of "set", accepts doubles.</p>
-                    <h3 class="text-light">/set route</h3>
-                    <p class="text-light">Has two children routes: /alrt and /wtr</p>
-                    <p class="text-light">Posting a JSON in the body with a "set" object will configure the functioning of the alarm (/alrt) or water pump (/wtr), to the value of "set", must be a boolean.</p>
-                    <h3 class="text-light">/store route</h3>
-                    <p class="text-light">Posting a JSON in the body with a "token" object will configure the FCM function (message push service) to your device.</p>
-                    <p class="text-light">This route should be used only by iOS or Android apps implementing Firebase Cloud Message.</p>
+                    <!-- Application ROUTES -->
+                    <h2 class="lead color-me">APPLICATION routes</h2>
+                    <p class="text-light">User must send authentication token</p>
 
-            <div class="btn btn-default btn-lg postman-run-button"
-                    data-postman-action="collection/import"
-                    data-postman-var-1="7e0a54f36de1a68b69f0"></div>
+                    <h3 class="text-light">POST /application</h3>
+                    <p class="text-light">Adds a new application to user</p>
+                    <p class="text-light">Expects appKey and appID (as given by ttn)</p>
+                    <p class="text-light">On success returns: Info on new app, 200 OK</p>
+                    <p class="text-light">On failure returns: 40x (depends on each case), and error message</p>
+
+                    <h3 class="text-light">DELETE /application</h3>
+                    <p class="text-light">Delete a user application</p>
+                    <p class="text-light">Expects appID</p>
+                    <p class="text-light">On success returns: appID, 200 OK</p>
+                    <p class="text-light">On failure returns: 400, and error message</p>
+
+                    <h3 class="text-light">GET /application</h3>
+                    <p class="text-light">Gets info on user application</p>
+                    <p class="text-light">Expects appID</p>
+                    <p class="text-light">On success returns: Queried app info, 200 OK</p>
+                    <p class="text-light">On failure returns: 400, and error message</p>
                 </div>
-            </div>
+                <div class="col-sm-6">
+                    <!-- Device Management ROUTES -->
+                    <h2 class="lead color-me">DEVICE management routes</h2>
+                    <p class="text-light">User must send authentication token</p>
+
+                    <h3 class="text-light">POST /device</h3>
+                    <p class="text-light">Adds a new device to a user application</p>
+                    <p class="text-light">Expects deviceID and appID (as given by ttn)</p>
+                    <p class="text-light">On success returns: Info on new device, 200 OK</p>
+                    <p class="text-light">On failure returns: 40x (depends on each case), and error message</p>
+
+                    <h3 class="text-light">DELETE /device</h3>
+                    <p class="text-light">Delete a user device on a specific application</p>
+                    <p class="text-light">Expects deviceID and appID</p>
+                    <p class="text-light">On success returns: deviceID, appID, 200 OK</p>
+                    <p class="text-light">On failure returns: 400, and error message</p>
+
+                    <h3 class="text-light">GET /device</h3>
+                    <p class="text-light">Gets info on user device</p>
+                    <p class="text-light">Expects deviceID</p>
+                    <p class="text-light">On success returns: Queried device info, 200 OK</p>
+                    <p class="text-light">On failure returns: 400, and error message</p>
+                </div>
+                <div class="col-sm-6">
+                    <!-- Device Handling ROUTES -->
+                    <h2 class="lead color-me">DEVICE handling routes</h2>
+                    <p class="text-light">User must send authentication token</p>
+
+                    <h3 class="text-light">POST /device/(subRoute)</h3>
+                    <p class="text-light">Configures a device parameter</p>
+                    <p class="text-light">Expects deviceID and appID (as given by ttn)</p>
+                    <p class="text-light">On success returns: 200 OK, blank JSON body</p>
+                    <p class="text-light">On failure returns: 400, and error message</p>
+
+                    <p class="text-light">The available subRoutes are the next ones:</p>
+                    <ul class="fa-ul">
+                        <li><i class="fa-li fa fa-check-square text-light"></i>thr/temp  <span style="color: #42adf4">&rarr;</span> Configures temperature level threshold</li>
+                        <li><i class="fa-li fa fa-check-square text-light"></i>thr/gas  <span style="color: #42adf4">&rarr;</span> Configures gas level threshold</li>
+                        <li><i class="fa-li fa fa-check-square text-light"></i>set/alert  <span style="color: #42adf4">&rarr;</span> Configures audible alarm as enabled/disabled</li>
+                        <li><i class="fa-li fa fa-check-square text-light"></i>set/water  <span style="color: #42adf4">&rarr;</span> Configures water pump as enabled/disabled</li>
+                    </ul>
+
+                </div>
+                <div class="col-sm-6">
+                    <!-- Additional ROUTES -->
+                    <h2 class="lead color-me">Additional features routes</h2>
+
+                    <h3 class="text-light">POST /store</h3>
+                    <p class="text-light">User must send authentication token</p>
+                    <p class="text-light">Refreshes the FCM token (message push service)</p>
+                    <p class="text-light">Expects push_req_token and push_req_old_token (Both FCM tokens, the latter will be swapped with the new one)</p>
+                    <p class="text-light">On success returns: 200 OK, blank JSON body</p>
+                    <p class="text-light">On failure returns: 400, and error message</p>
+
+                    <h3 class="text-light">GET /online</h3>
+                    <p class="text-light">On success returns: 200 OK, 'API is online' message</p>
+                    <p class="text-light">If it's not reachable then api is offline</p>
+                </div>
+
+                <div class="col-sm-6">
+                    <!-- Additional ROUTES -->
+                    <h2 class="lead color-me">For testing a Postman Lib is given:</h2>
+                    <div class="btn btn-default btn-lg postman-run-button"
+                         data-postman-action="collection/import"
+                         data-postman-var-1="7e0a54f36de1a68b69f0"></div>
+                    </div>
+                </div>
+
+
         </div>
     </section>
 

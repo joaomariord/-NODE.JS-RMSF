@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
+const {database_url} = require("./../Configs/config");
 
-// noinspection SpellCheckingInspection
-const database_url = process.env.MONGODB_URI || "mongodb://heroku_49mrdg0x:bkllahlbeljncb6t2vi7uojkfv@ds261088.mlab.com:61088/heroku_49mrdg0x";
+const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise; //Set default library to handle promise
 mongoose.connect(database_url).then(() => {
@@ -10,7 +9,8 @@ mongoose.connect(database_url).then(() => {
     },(error) => {
         //This is not connected
         console.log("Not connected to db:" + error);
-    });
+        console.log("Check Configs/config file, maybe some parameters are wrong");
+});
 
 module.exports = {
     mongoose: mongoose

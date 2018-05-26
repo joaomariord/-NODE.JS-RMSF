@@ -1,7 +1,10 @@
+const {PORT} = require("./Configs/config");
+
 const express = require('express');
 const bodyParser = require('body-parser');
-const ttn_interface = require("./Controller/ttn_interface");
 const _ = require("lodash");
+
+const ttn_interface = require("./Controller/ttn_interface");
 const push = require("./Controller/android_push_api");
 
 const {authenticate} = require("./Middleware/authenticate");
@@ -11,7 +14,6 @@ const {Token} = require("./Models/push_token");
 const {TTNModel} = require("./Models/ttn_devices");
 
 let app = express();
-const PORT = process.env.PORT || 80;
 
 async function send_ttn_message(route, req, res) {
     const user_id = _.pick(req.user, "_id")._id.toString();

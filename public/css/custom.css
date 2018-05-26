@@ -115,6 +115,10 @@ header .header-content .header-content-inner p {
 	text-align: center;
 }
 
+.color-me {
+    color: yellow;
+}
+
 .promo,
 .promo h3,
 .promo a:link,

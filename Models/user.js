@@ -1,3 +1,5 @@
+const {app_secret, gen_salt_runs} = require("./../Configs/config");
+
 const {mongoose} = require("./../DB/mongoose");
 const validator = require("validator");
 
@@ -67,7 +69,7 @@ UserSchema.statics.findByToken = function (token) {
 
     try {
         // noinspection SpellCheckingInspection
-        decoded = jwt.verify(token, process.env.JWT_SECRET||"thisisasecret");
+        decoded = jwt.verify(token, app_secret);
     } catch (e) {
         return Promise.reject();
     }
@@ -83,7 +85,7 @@ UserSchema.pre("save", function (next) {
     let user = this;
 
     if(user.isModified("password")) {
-        bcrypt.genSalt(10,(err, salt) => {
+        bcrypt.genSalt(gen_salt_runs,(err, salt) => {
             if(err){ console.log(err); next();}
             bcrypt.hash(user.password, salt, (err, hash) => {
                 if(err){console.log(err); next();}
@@ -109,7 +111,7 @@ UserSchema.methods.generateAuthToken = function () {
     let access = "auth";
     // noinspection SpellCheckingInspection
     // noinspection SpellCheckingInspection
-    let token = jwt.sign({_id: user._id.toHexString(), access}, process.env.JWT_SECRET||"thisisasecret").toString();
+    let token = jwt.sign({_id: user._id.toHexString(), access}, app_secret).toString();
 
     user.tokens.push({access, token});
     return user.save().then(() => {
