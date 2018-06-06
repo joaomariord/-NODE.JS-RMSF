@@ -144,14 +144,14 @@ function _decode_payload(payload) {
     if(payload.port === 1){
         //payload_raw is buffer so we can use its methods
         let parsed_payload = _internal_status;
-        parsed_payload.temp.status = payload.payload_raw.readUInt8(0);
-        parsed_payload.temp.threshold  = payload.payload_raw.readUInt8(1);
-        parsed_payload.gas.status  = payload.payload_raw.readUInt8(2);
-        parsed_payload.gas.threshold  = payload.payload_raw.readUInt8(3);
-        parsed_payload.water.status = payload.payload_raw.readUInt8(4) === 1;
-        parsed_payload.water.operational   = payload.payload_raw.readUInt8(5) === 1;
-        parsed_payload.alert.status  = payload.payload_raw.readUInt8(6) === 1;
-        parsed_payload.alert.operational= payload.payload_raw.readUInt8(7) === 1;
+        parsed_payload.gas.status = payload.payload_raw.readUInt8(0);
+        parsed_payload.gas.threshold  = payload.payload_raw.readUInt8(1);
+        parsed_payload.temp.status  = payload.payload_raw.readUInt8(2);
+        parsed_payload.temp.threshold  = payload.payload_raw.readUInt8(3);
+        parsed_payload.alert.status = payload.payload_raw.readUInt8(4) === 1;
+        parsed_payload.alert.operational   = payload.payload_raw.readUInt8(5) === 1;
+        parsed_payload.water.status  = payload.payload_raw.readUInt8(6) === 1;
+        parsed_payload.water.operational= payload.payload_raw.readUInt8(7) === 1;
         parsed_payload.lastseen = Date.now();
         return parsed_payload;
     } else {
