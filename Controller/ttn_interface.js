@@ -23,6 +23,31 @@ let _internal_status = {
 //Sends a message to any device, static function
 function send_message(type, message, appID, appKey, deviceID) {
     ttn.data(appID, appKey).then( (client)=> {
+        client.on("error", async (error)=> {
+            console.log("Error on application " + appID + " Error: " + error);
+            //Some error happens, invalidate application
+            console.log(`Application (${appID}) invalidated in db for this section`);
+
+            //Remove application listener
+            client.close(true, () => {
+                //Client closed
+                applications_listening.splice(applications_listening.findIndex(each => each === appID ), 1);
+                console.log(`Application (${appID}) listener removed`);
+            });
+            //Send push message to user waning that app is invalid
+            try {
+                let pushToken = await Token.findByUserId(userID);
+                push.sendData({
+                    type:"appInvalidation",
+                    appID: appID
+                }, pushToken.tokens.map(x=>x.token));
+                console.log(`Notified user (${userID}) on app (${appID}) invalidation`);
+            } catch (e) {
+                console.log(`Could not notify user (${userID}) on app (${appID}) invalidation`);
+                console.log("Error: " + e)
+            }
+        });
+
         let n_obj = {};
         try {
             n_obj = _encode_payload(type, message);
@@ -31,8 +56,12 @@ function send_message(type, message, appID, appKey, deviceID) {
             if(err.message === "TypeError") console.error("Message type not supported");
             return;
         }
-        client.send(deviceID, n_obj.message, n_obj.port, true, "replace" );
-        console.log("Sent downlink with message: "+n_obj.message+" to port: "+n_obj.port);
+        try {
+            client.send(deviceID, n_obj.message, n_obj.port, true, "replace" );
+            console.log("Sent downlink with message: "+n_obj.message+" to port: "+n_obj.port);
+        } catch (e) {
+            console.log("Cannot Send Message" + e);
+        }
     }).catch( (e)=>{
         console.log("Error connecting to app, intending to send message" + e);
     })
