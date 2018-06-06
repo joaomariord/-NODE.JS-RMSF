@@ -160,8 +160,8 @@ function _decode_payload(payload) {
 }
 
 function _model_encapsulate(decodedPayload) {
-    decodedPayload.temp.status = decodedPayload.temp.status *100.0/255;
-    decodedPayload.temp.threshold = decodedPayload.temp.threshold *100.0/255;
+    decodedPayload.temp.status = decodedPayload.temp.status;
+    decodedPayload.temp.threshold = decodedPayload.temp.threshold;
 
     decodedPayload.gas.status = decodedPayload.gas.status *100.0/255;
     decodedPayload.gas.threshold = decodedPayload.gas.threshold *100.0/255;
@@ -177,7 +177,7 @@ function _encode_payload(type, message) {
             //Double encoding
             if(typeof message === "string")
             {
-                buf.writeUInt8(Number.parseFloat(message)*255/100,0);
+                buf.writeUInt8(Number.parseFloat(message),0);
                 return {message:buf, port:2,};
             }
             break;
